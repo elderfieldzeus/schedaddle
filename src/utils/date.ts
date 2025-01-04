@@ -22,5 +22,9 @@ export function createDate(hour: number, minutes: number): Date {
 }
 
 export function compareDates(date1: Date, date2: Date): number {
-    return date1.getTime() - date2.getTime();
+    if(date1.getHours() == date2.getHours()) {
+        return date1.getMinutes() - date2.getMinutes(); 
+    }
+
+    return date1.getHours() - date2.getHours();
 }

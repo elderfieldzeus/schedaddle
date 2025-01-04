@@ -31,6 +31,7 @@ export function convertSchedule(schedule: IScheduleOption): ISchedule {
 export function createProposedSchedules(subjects: ISubject[]): IProposedSchedule[] {
     const proposedSchedules: IProposedSchedule[] = [];
 
+    console.log(subjects);
     // recursive function to find all posible schedules
     getProposedSchedules(
         0,
@@ -39,7 +40,7 @@ export function createProposedSchedules(subjects: ISubject[]): IProposedSchedule
         proposedSchedules
     );
     
-    return proposedSchedules;
+    return proposedSchedules
 }
 
 // Depth First Search
@@ -48,27 +49,34 @@ export function getProposedSchedules(
     subjects: ISubject[],
     proposedSchedule: IProposedSchedule,
     proposedSchedules: IProposedSchedule[]
-): void 
+): void
 {
-    if(index > subjects.length) {
+    if(index >= subjects.length) {
         proposedSchedules.push(proposedSchedule);
         return;
     }
 
+    let status = true;
+
     // loop through the different subject schedules
-    for(let i = 0; i < subjects[index].schedules.length; i++) {
+    for(let i = 0; i < subjects[index].schedules.length && status; i++) {
         const sched = subjects[index].schedules[i];
 
         let copy: IProposedSchedule | null = proposedSchedule;
 
         // get newly updated schedule
         copy = insertSubject(copy, {
-            ...subjects[index],
+            id: subjects[index].id,
+            name: subjects[index].name,
             schedule: sched
         });
 
+        if(copy == null) {
+            console.log('meow');
+        }
+
         // if copy is not null, continue search
-        if(copy) {
+        if(copy !== null) {
             getProposedSchedules(
                 index + 1,
                 subjects,
@@ -79,12 +87,14 @@ export function getProposedSchedules(
     }
 }
 
-export function insertSubject(proposedSchedule: IProposedSchedule, subject: ISubjectSpecific, ): IProposedSchedule | null {
-    subject.schedule.days.forEach((day) => {
+export function insertSubject(proposedSchedule: IProposedSchedule, subject: ISubjectSpecific): IProposedSchedule | null {
+
+    for(let j: number = 0; j < subject.schedule.days.length; j++) {
+        const day: EDate = subject.schedule.days[j];
         const scheds: undefined | ISubjectSpecific[] = proposedSchedule.days.get(day);
     
         // if error in map
-        if(scheds === undefined) return false;
+        if(scheds === undefined) return null;
 
         // if subject already in schedule
         if(scheds.findIndex((sched) => sched.id === subject.id) !== -1) return null;
@@ -98,12 +108,15 @@ export function insertSubject(proposedSchedule: IProposedSchedule, subject: ISub
         ; i++) {}
 
         // if overlaps
-        if(i !== scheds.length && (subject.schedule.end > scheds[i].schedule.start)) return null;
+        if(i !== scheds.length && (compareDates(subject.schedule.end, scheds[i].schedule.start) > 0)) return null;
 
+        if(i !== 0 && (compareDates(scheds[i - 1].schedule.end, subject.schedule.start) > 0)) return null;
 
         // insert
         scheds.splice(i, 0, subject);
-    });
+
+        proposedSchedule.days.set(day, scheds);
+    }
 
     return proposedSchedule;
 }

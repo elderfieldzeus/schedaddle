@@ -4,6 +4,7 @@ import Cell from '../components/Cell'
 import CellPlaceHolder from '../components/CellPlaceHolder'
 import SubjectContainer from '../components/SubjectContainer'
 import { ISchedule, ISubject } from '../types/types'
+import { createProposedSchedules } from '../utils/schedule'
 
 const Home: React.FC = () => {
   const [subjects, setSubjects] = useState<ISubject[]>([]);
@@ -65,6 +66,10 @@ const Home: React.FC = () => {
     });
   } 
 
+  const handleGenerate = () => {
+    console.log(createProposedSchedules(subjects));
+  }
+
   return (
     <div className='min-h-screen w-full bg-white pb-10'>
       <Header />
@@ -81,6 +86,7 @@ const Home: React.FC = () => {
                     Add Subject
                 </button>
                 <button
+                  onClick={handleGenerate}
                   className='bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-xs transition-colors text-white px-4 py-2 rounded-lg font-medium'
                 >
                   Generate
