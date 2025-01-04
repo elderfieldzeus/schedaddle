@@ -5,9 +5,10 @@ import { getTimeString } from '../utils/date'
 
 interface SubjectScheduleProps {
     schedule: ISchedule;
+    handleDelete: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const SubjectSchedule: React.FC<SubjectScheduleProps> = ({schedule}) => {
+const SubjectSchedule: React.FC<SubjectScheduleProps> = ({schedule, handleDelete}) => {
   return (
     <div className='w-full flex items-center justify-between px-3 py-2 border-t'>
         <div className='flex items-center gap-4'>
@@ -15,7 +16,7 @@ const SubjectSchedule: React.FC<SubjectScheduleProps> = ({schedule}) => {
             <div className='flex gap-1'>
                 <p>{getTimeString(schedule.start)}</p>
                 <p>-</p>
-                <p>{getTimeString(schedule.start)}</p>
+                <p>{getTimeString(schedule.end)}</p>
                 <div className='flex'>
                     {
                         schedule.days.map((day, index) => {
@@ -36,7 +37,12 @@ const SubjectSchedule: React.FC<SubjectScheduleProps> = ({schedule}) => {
                 </div>
             </div>
         </div>
-        <button className='text-xs rounded-lg bg-red-400 py-1 px-2 text-white hover:bg-red-500 active:bg-red-600'>Remove Sched</button>
+        <button 
+            onClick={handleDelete}
+            className='text-xs rounded-lg bg-red-400 py-1 px-2 text-white hover:bg-red-500 active:bg-red-600'
+        >
+            Remove Sched
+        </button>
     </div>
   )
 }

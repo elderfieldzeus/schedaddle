@@ -1,8 +1,13 @@
 import React from 'react'
 
-const SelectTime: React.FC = () => {
+interface SelectTimeProps {
+  handleChange: React.ChangeEventHandler<HTMLSelectElement>;
+  value: string;
+}
+
+const SelectTime: React.FC<SelectTimeProps> = ({handleChange, value}) => {
   return (
-    <select>
+    <select onChange={handleChange} value={value}>
         <option value="7:00">7:00 AM</option>
         <option value="7:30">7:30 AM</option>
         <option value="8:00">8:00 AM</option>

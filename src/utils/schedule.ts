@@ -1,7 +1,34 @@
-import { compareDates } from "./date";
-import { IProposedSchedule, IChosenSubjects, ISubject } from "../types/types";
+import { compareDates, getTimeDate } from "./date";
+import { EDate, IProposedSchedule, ISchedule, IScheduleOption, ISubject, ISubjectSpecific } from "../types/types";
 
-export function createProposedSchedules(subjects: IChosenSubjects): IProposedSchedule[] {
+export function convertSchedule(schedule: IScheduleOption): ISchedule {
+    const days: EDate[] = [];
+
+    schedule.days.forEach((day) => {
+        let d: EDate = EDate.MONDAY;
+
+        switch(day) {
+            case 'monday': d = EDate.MONDAY; break;
+            case 'tuesday': d = EDate.TUESDAY; break;
+            case 'wednesday': d = EDate.WEDNESDAY; break;
+            case 'thursday': d = EDate.THURSDAY; break;
+            case 'friday': d = EDate.FRIDAY; break;
+            case 'saturday': d = EDate.SATURDAY; break;
+        }
+
+        days.push(d);
+    });
+
+    days.sort();
+
+    return {
+        start: getTimeDate(schedule.start),
+        end: getTimeDate(schedule.end),
+        days
+    };
+}
+
+export function createProposedSchedules(subjects: ISubject[]): IProposedSchedule[] {
     const proposedSchedules: IProposedSchedule[] = [];
 
     // recursive function to find all posible schedules
@@ -18,7 +45,7 @@ export function createProposedSchedules(subjects: IChosenSubjects): IProposedSch
 // Depth First Search
 export function getProposedSchedules(
     index: number,
-    subjects: IChosenSubjects,
+    subjects: ISubject[],
     proposedSchedule: IProposedSchedule,
     proposedSchedules: IProposedSchedule[]
 ): void 
@@ -29,15 +56,15 @@ export function getProposedSchedules(
     }
 
     // loop through the different subject schedules
-    for(let i = 0; i < subjects[index].length; i++) {
-        const option = subjects[index][i];
+    for(let i = 0; i < subjects[index].schedules.length; i++) {
+        const sched = subjects[index].schedules[i];
 
         let copy: IProposedSchedule | null = proposedSchedule;
 
         // get newly updated schedule
         copy = insertSubject(copy, {
-            ...option,
-            schedule: option.schedule
+            ...subjects[index],
+            schedule: sched
         });
 
         // if copy is not null, continue search
@@ -52,9 +79,9 @@ export function getProposedSchedules(
     }
 }
 
-export function insertSubject(proposedSchedule: IProposedSchedule, subject: ISubject, ): IProposedSchedule | null {
+export function insertSubject(proposedSchedule: IProposedSchedule, subject: ISubjectSpecific, ): IProposedSchedule | null {
     subject.schedule.days.forEach((day) => {
-        const scheds: undefined | ISubject[] = proposedSchedule.days.get(day);
+        const scheds: undefined | ISubjectSpecific[] = proposedSchedule.days.get(day);
     
         // if error in map
         if(scheds === undefined) return false;

@@ -8,6 +8,12 @@ export enum EDate {
     SATURDAY
 }
 
+export interface IScheduleOption {
+    start: string;
+    end: string;
+    days: Set<string>;
+}
+
 export interface ISchedule {
     start: Date;
     end: Date;
@@ -17,15 +23,17 @@ export interface ISchedule {
 export interface ISubject {
     id: number;
     name: string;
+    schedules: ISchedule[]; // TTH
+}
+
+export interface ISubjectSpecific {
+    id: number;
+    name: string;
     schedule: ISchedule; // TTH
 }
 
-export type ISubjectOfferedSchedules = ISubject[];
-
-export type IChosenSubjects = ISubjectOfferedSchedules[]; // subject[specific-subject][sched-option]
-
 export class IProposedSchedule {
-    public days: Map<EDate, ISubject[]>;
+    public days: Map<EDate, ISubjectSpecific[]>;
 
     constructor() {
         this.days = new Map();

@@ -1,3 +1,9 @@
+export function getTimeDate(date: string) {
+    const date_sep: string[] = date.split(':');
+
+    return createDate(Number.parseInt(date_sep[0]), Number.parseInt(date_sep[1]));
+}
+
 export function getTimeString(date: Date) {
     const hours = date.getHours();
     const mins = date.getMinutes()

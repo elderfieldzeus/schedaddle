@@ -1,10 +1,70 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../components/Header'
 import Cell from '../components/Cell'
 import CellPlaceHolder from '../components/CellPlaceHolder'
 import SubjectContainer from '../components/SubjectContainer'
+import { ISchedule, ISubject } from '../types/types'
 
 const Home: React.FC = () => {
+  const [subjects, setSubjects] = useState<ISubject[]>([]);
+
+  const handleAddSubject = (index: number) => {
+    setSubjects(prev => {
+      return [...prev, {
+        id: Math.floor(Math.random() * 100),
+        name: `Subject #${index + 1}`,
+        schedules: []
+      }]
+    })
+  }
+
+  const handleDeleteSubject = (index: number): React.MouseEventHandler<HTMLButtonElement> => () => {
+    setSubjects(prev => {
+      return prev.filter((subject, i) => index !== i);
+    });
+  }
+
+  const handleChangeName = (index: number): React.ChangeEventHandler<HTMLInputElement> => (e) => {
+    setSubjects(prev => {
+      const copy = [...prev];
+
+      copy[index] = {
+        ...copy[index],
+        name: e.target.value
+      }
+      
+      return copy;
+    });
+  }
+
+  const handleAddSchedule = (index: number) => (schedule: ISchedule) => {
+    setSubjects(prev => {
+      const copy = [...prev];
+
+      const sCopy = [schedule, ...copy[index].schedules];
+
+      copy[index] = {
+        ...copy[index],
+        schedules: sCopy
+      };
+
+      return copy;
+    });
+  }
+
+  const handleDeleteSchedule = (subIndex: number) => (schedIndex: number): React.MouseEventHandler<HTMLButtonElement> => () => {
+    setSubjects(prev => {
+      return prev.map((subject, i) => 
+        i === subIndex
+          ? {
+              ...subject,
+              schedules: subject.schedules.filter((_, j) => j !== schedIndex),
+            }
+          : subject
+      );
+    });
+  } 
+
   return (
     <div className='min-h-screen w-full bg-white pb-10'>
       <Header />
@@ -13,14 +73,36 @@ const Home: React.FC = () => {
         <div className='w-full lg:w-[40rem]'>
             <div className='flex justify-between items-center mb-4'>
               <p className='text-xl font-medium'>Subject Schedules</p>
-              <button className='bg-blue-400 hover:bg-blue-500 active:bg-blue-600 text-xs transition-colors text-white px-4 py-2 rounded-lg font-medium'>
-                  Add Subject
-              </button>
+              <div className='flex gap-2'>
+                <button
+                  onClick={() => handleAddSubject(subjects.length)}
+                  className='bg-blue-400 hover:bg-blue-500 active:bg-blue-600 text-xs transition-colors text-white px-4 py-2 rounded-lg font-medium'
+                >
+                    Add Subject
+                </button>
+                <button
+                  className='bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-xs transition-colors text-white px-4 py-2 rounded-lg font-medium'
+                >
+                  Generate
+                </button>
+              </div>
             </div>
 
             <div className='w-full'>
-              <SubjectContainer index={1} />
-              <SubjectContainer index={2} />
+              {
+                subjects.map((subject, index) => {
+                  return (
+                    <SubjectContainer 
+                      key={index}
+                      subject={subject} 
+                      handleChangeName = {handleChangeName(index)}
+                      handleDeleteSubject = {handleDeleteSubject(index)}
+                      handleAddSchedule = {handleAddSchedule(index)}
+                      handleDeleteSchedule = {handleDeleteSchedule(index)}
+                    />
+                  );
+                })
+              }
             </div>
         </div>
 
