@@ -31,7 +31,6 @@ export function convertSchedule(schedule: IScheduleOption): ISchedule {
 export function createProposedSchedules(subjects: ISubject[]): IProposedSchedule[] {
     const proposedSchedules: IProposedSchedule[] = [];
 
-    console.log(subjects);
     // recursive function to find all posible schedules
     getProposedSchedules(
         0,
@@ -52,17 +51,18 @@ export function getProposedSchedules(
 ): void
 {
     if(index >= subjects.length) {
-        proposedSchedules.push(proposedSchedule);
+        proposedSchedules.push({...proposedSchedule});
         return;
     }
 
-    let status = true;
-
     // loop through the different subject schedules
-    for(let i = 0; i < subjects[index].schedules.length && status; i++) {
-        const sched = subjects[index].schedules[i];
+    for(let i = 0; i < subjects[index].schedules.length; i++) {
+        const sched = {...subjects[index].schedules[i]};
 
-        let copy: IProposedSchedule | null = proposedSchedule;
+        let copy: IProposedSchedule | null = {...proposedSchedule};
+
+        // copy by value
+        copy.days = new Map(proposedSchedule.days);
 
         // get newly updated schedule
         copy = insertSubject(copy, {
@@ -71,16 +71,13 @@ export function getProposedSchedules(
             schedule: sched
         });
 
-        if(copy == null) {
-            console.log('meow');
-        }
-
         // if copy is not null, continue search
         if(copy !== null) {
+            // console.log(sched)
             getProposedSchedules(
                 index + 1,
                 subjects,
-                copy,
+                {...copy},
                 proposedSchedules
             );
         }
@@ -91,10 +88,12 @@ export function insertSubject(proposedSchedule: IProposedSchedule, subject: ISub
 
     for(let j: number = 0; j < subject.schedule.days.length; j++) {
         const day: EDate = subject.schedule.days[j];
-        const scheds: undefined | ISubjectSpecific[] = proposedSchedule.days.get(day);
+        const result: undefined | ISubjectSpecific[] = proposedSchedule.days.get(day);
     
         // if error in map
-        if(scheds === undefined) return null;
+        if(result === undefined) return null;
+
+        const scheds = [...result];
 
         // if subject already in schedule
         if(scheds.findIndex((sched) => sched.id === subject.id) !== -1) return null;
