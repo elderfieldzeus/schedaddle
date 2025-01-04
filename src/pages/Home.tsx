@@ -2,16 +2,15 @@ import React from 'react'
 import Header from '../components/Header'
 import Cell from '../components/Cell'
 import CellPlaceHolder from '../components/CellPlaceHolder'
-import SelectTime from '../components/SelectTime'
-import DayCheckbox from '../components/DayCheckbox'
+import SubjectContainer from '../components/SubjectContainer'
 
 const Home: React.FC = () => {
   return (
-    <div className='min-h-screen w-full bg-white'>
+    <div className='min-h-screen w-full bg-white pb-10'>
       <Header />
 
       <main className='w-full px-10 flex flex-col lg:flex-row lg:justify-between gap-4'>
-        <div className='w-full lg:w-[36rem]'>
+        <div className='w-full lg:w-[40rem]'>
             <div className='flex justify-between items-center mb-4'>
               <p className='text-xl font-medium'>Subject Schedules</p>
               <button className='bg-blue-400 hover:bg-blue-500 active:bg-blue-600 text-xs transition-colors text-white px-4 py-2 rounded-lg font-medium'>
@@ -20,32 +19,8 @@ const Home: React.FC = () => {
             </div>
 
             <div className='w-full'>
-              <div className='w-full'>
-                <div className='w-full bg-blue-400 px-2 py-2 text-white font-medium border-2 border-gray-200'>
-                  <input className='bg-blue-300 p-1 text-sm'/>
-                </div>
-
-                <form className='w-full px-3 py-1 text-xs flex justify-between items-center border-b '>
-                  <div className='flex gap-2'>
-                    <p>Start</p>
-                    <SelectTime />
-                  </div>
-                  <div className='flex gap-2'>
-                    <p>End</p>
-                    <SelectTime />
-                  </div>
-                  <div className='flex gap-2'>
-                    <DayCheckbox label='M' value='monday'/>
-                    <DayCheckbox label='T' value='tuesday'/>
-                    <DayCheckbox label='W' value='wednesday'/>
-                    <DayCheckbox label='TH' value='thursday'/>
-                    <DayCheckbox label='F' value='friday'/>
-                    <DayCheckbox label='S' value='saturday'/>
-                  </div>
-                  <button className='text-xs rounded-lg bg-blue-400 py-1 px-2 text-white hover:bg-blue-500 active:bg-blue-600'>Add Sched</button>
-                </form>
-
-              </div>
+              <SubjectContainer index={1} />
+              <SubjectContainer index={2} />
             </div>
         </div>
 

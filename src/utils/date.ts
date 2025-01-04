@@ -1,3 +1,11 @@
+export function getTimeString(date: Date) {
+    const hours = date.getHours();
+    const mins = date.getMinutes()
+    const merridian = (hours >= 12) ? 'PM' : 'AM';
+
+    return `${hours % 12 == 0 ? 12 : hours % 12}:${mins >= 10 ? mins : `0${mins}`} ${merridian}`;
+}
+
 export function createDate(hour: number, minutes: number): Date {
     const date = new Date()
 
