@@ -5,7 +5,7 @@ export function createProposedSchedules(subjects: IChosenSubjects): IProposedSch
     const proposedSchedules: IProposedSchedule[] = [];
 
     // recursive function to find all posible schedules
-    fillProposedSchedule(
+    getProposedSchedules(
         0,
         subjects,
         new IProposedSchedule(),
@@ -16,7 +16,7 @@ export function createProposedSchedules(subjects: IChosenSubjects): IProposedSch
 }
 
 // Depth First Search
-export function fillProposedSchedule(
+export function getProposedSchedules(
     index: number,
     subjects: IChosenSubjects,
     proposedSchedule: IProposedSchedule,
@@ -45,7 +45,7 @@ export function fillProposedSchedule(
 
         // if copy is not null, continue search
         if(copy) {
-            fillProposedSchedule(
+            getProposedSchedules(
                 index + 1,
                 subjects,
                 copy,
