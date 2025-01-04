@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Cell from '../components/Cell'
-import CellPlaceHolder from '../components/CellPlaceHolder'
 import SubjectContainer from '../components/SubjectContainer'
-import { ISchedule, ISubject } from '../types/types'
+import { IProposedSchedule, ISchedule, ISubject, ITable } from '../types/types'
 import { createProposedSchedules } from '../utils/schedule'
+import { convertTable, createDefaultTable } from '../utils/display'
 
 const Home: React.FC = () => {
   const [subjects, setSubjects] = useState<ISubject[]>([]);
+  const [proposed, setProposed] = useState<IProposedSchedule[]>([]);
+  const [table, setTable] = useState<ITable>(createDefaultTable());
+  const [index, setIndex] = useState<number>(0);
 
   const handleAddSubject = (index: number) => {
     setSubjects(prev => {
@@ -67,8 +70,29 @@ const Home: React.FC = () => {
   } 
 
   const handleGenerate = () => {
-    console.log(createProposedSchedules(subjects));
+    setProposed(createProposedSchedules(subjects))
   }
+
+  useEffect(() => {
+    if(proposed.length > 0) {
+      setTable(convertTable(proposed[0]));
+    }
+    else {
+      setTable(createDefaultTable());
+    }
+    
+    setIndex(0);
+  }, [proposed]);
+
+  useEffect(() => {
+    if(proposed.length > 0) {
+      setTable(convertTable(proposed[index]));
+    }
+    else {
+      setIndex(0);
+      setTable(createDefaultTable());
+    }
+  }, [index]);
 
   return (
     <div className='min-h-screen w-full bg-white pb-10'>
@@ -76,7 +100,7 @@ const Home: React.FC = () => {
 
       <main className='w-full px-10 flex flex-col lg:flex-row lg:justify-between gap-4'>
         <div className='w-full lg:w-[40rem]'>
-            <div className='flex justify-between items-center mb-4'>
+            <div className='flex justify-between items-center h-14'>
               <p className='text-xl font-medium'>Subject Schedules</p>
               <div className='flex gap-2'>
                 <button
@@ -113,9 +137,33 @@ const Home: React.FC = () => {
         </div>
 
         <div className='w-full lg:w-[46rem]'>
+          <div className='flex justify-between items-center h-14'>
+            <div className='flex gap-2'>
+              <button
+                onClick={() => setIndex(prev => prev - 1)}
+                className=' bg-blue-400 disabled:bg-blue-200 active:bg-blue-600 text-xs transition-colors text-white w-24 py-2 rounded-lg font-medium'
+                disabled={index <= 0}
+              >
+                Previous
+              </button>
+              <button
+                onClick={() => setIndex(prev => prev + 1)}
+                className='bg-blue-400 disabled:bg-blue-200 active:bg-blue-600 text-xs transition-colors text-white w-24 py-2 rounded-lg font-medium'
+                disabled={index >= proposed.length - 1}
+              >
+                Next
+              </button>
+            </div>
+            <button
+              onClick={() => setTable(createDefaultTable())}
+              className='bg-red-400 hover:bg-red-500 active:bg-red-600 text-xs transition-colors text-white px-4 py-2 rounded-lg font-medium'
+            >
+              Clear Table
+            </button>
+          </div>
           <div className='w-full min-h-[46rem] bg-white border-2 border-gray-200 grid grid-cols-7 divide-x-2 divide-gray-200 divide-solid'>
               <div className='h-full grid grid-rows-[repeat(29,1fr)] text-xs divide-y-2 divide-gray-200 divide-solid text-center'>
-                <Cell className='bg-blue-400'>&nbsp;</Cell>
+                <Cell className='bg-blue-400 text-white'>&nbsp;</Cell>
                 <Cell>7:00-7:30AM</Cell>
                 <Cell>7:30-8:00AM</Cell>
                 <Cell>8:00-8:30AM</Cell>
@@ -146,28 +194,52 @@ const Home: React.FC = () => {
                 <Cell>8:30-9:00PM</Cell>
               </div>
               <div className='h-full grid grid-rows-[repeat(29,1fr)] text-xs divide-y-2 divide-gray-200 divide-solid'>
-                <Cell className='bg-blue-400 text-white font-medium'>Monday</Cell>
-                <CellPlaceHolder />
+                <Cell className='bg-blue-400 text-white font-medium row-span-4'>Monday</Cell>
+                {table[0].map((cell, index) => {
+                  return (
+                    <Cell key={index} level={cell.start} slots={cell.slots} empty={cell.empty}><p>{cell.name}</p></Cell>
+                  )
+                })}
               </div>
               <div className='h-full grid grid-rows-[repeat(29,1fr)] text-xs divide-y-2 divide-gray-200 divide-solid'>
                 <Cell className='bg-blue-400 text-white font-medium'>Tuesday</Cell>
-                <CellPlaceHolder />
+                {table[1].map((cell, index) => {
+                  return (
+                    <Cell key={index} level={cell.start} slots={cell.slots} empty={cell.empty}><p>{cell.name}</p></Cell>
+                  )
+                })}
               </div>
               <div className='h-full grid grid-rows-[repeat(29,1fr)] text-xs divide-y-2 divide-gray-200 divide-solid'>
                 <Cell className='bg-blue-400 text-white font-medium'>Wednesday</Cell>
-                <CellPlaceHolder />
+                {table[2].map((cell, index) => {
+                  return (
+                    <Cell key={index} level={cell.start} slots={cell.slots} empty={cell.empty}><p>{cell.name}</p></Cell>
+                  )
+                })}
               </div>
               <div className='h-full grid grid-rows-[repeat(29,1fr)] text-xs divide-y-2 divide-gray-200 divide-solid'>
                 <Cell className='bg-blue-400 text-white font-medium'>Thursday</Cell>
-                <CellPlaceHolder />
+                {table[3].map((cell, index) => {
+                  return (
+                    <Cell key={index} level={cell.start} slots={cell.slots} empty={cell.empty}><p>{cell.name}</p></Cell>
+                  )
+                })}
               </div>
               <div className='h-full grid grid-rows-[repeat(29,1fr)] text-xs divide-y-2 divide-gray-200 divide-solid'>
                 <Cell className='bg-blue-400 text-white font-medium'>Friday</Cell>
-                <CellPlaceHolder />
+                {table[4].map((cell, index) => {
+                  return (
+                    <Cell key={index} level={cell.start} slots={cell.slots} empty={cell.empty}><p>{cell.name}</p></Cell>
+                  )
+                })}
               </div>
               <div className='h-full grid grid-rows-[repeat(29,1fr)] text-xs divide-y-2 divide-gray-200 divide-solid'>
                 <Cell className='bg-blue-400 text-white font-medium'>Saturday</Cell>
-                <CellPlaceHolder />
+                {table[5].map((cell, index) => {
+                  return (
+                    <Cell key={index} level={cell.start} slots={cell.slots} empty={cell.empty}><p>{cell.name}</p></Cell>
+                  )
+                })}
               </div>
           </div>
         </div>

@@ -1,5 +1,4 @@
 export enum EDate {
-    SUNDAY,
     MONDAY,
     TUESDAY,
     WEDNESDAY,
@@ -43,3 +42,15 @@ export class IProposedSchedule {
         }
     }
 }
+
+export interface ICell {
+    start: number
+    level: number;
+    slots: number;
+    name: string;
+    empty: boolean;
+};
+
+export type IColumn = ICell[];
+
+export type ITable = IColumn[];
