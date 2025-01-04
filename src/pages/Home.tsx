@@ -20,7 +20,7 @@ const Home: React.FC = () => {
 
   const handleDeleteSubject = (index: number): React.MouseEventHandler<HTMLButtonElement> => () => {
     setSubjects(prev => {
-      return prev.filter((subject, i) => index !== i);
+      return prev.filter((_, i) => index !== i);
     });
   }
 
