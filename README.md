@@ -7,7 +7,7 @@
   <h3 align="center">Schedaddle</h3>
 
   <p align="center">
-    A web app that visualizes and creates class schedules based on offered schedules
+    A web app that generates and visualizes class schedules based on offered schedules
     <br />
     <br />
     <a href="https://schedaddle-react.vercel.app">Visit Site</a>
