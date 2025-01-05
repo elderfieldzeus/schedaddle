@@ -1,50 +1,84 @@
-# React + TypeScript + Vite
+<br />
+<div align="center">
+  <a href="[Project URL]">
+    <img src="public/img/logo.png" alt="Schedaddle Logo" width="80" height="80">
+  </a>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+  <h3 align="center">Schedaddle</h3>
 
-Currently, two official plugins are available:
+  <p align="center">
+    A web app that visualizes and creates class schedules based on offered schedules
+    <br />
+    <br />
+    <a href="https://schedaddle-react.vercel.app">Visit Site</a>
+  </p>
+</div>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## About The Project
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+**Schedaddle** is a user-friendly web application designed to simplify schedule management. Users can input offered schedules, and the app efficiently generates optimized schedules to meet individual or group needs. With a focus on class schedules, Schedaddle provides an easy approach to visualizing schedules effectively.
 
-- Configure the top-level `parserOptions` property like this:
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+---
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Built With
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+* [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+* [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+* [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+* [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+To get a local copy up and running follow these simple steps.
+
+### Prerequisites
+
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
+
+### Installation
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/elderfieldzeus/schedaddle.git
+   ```
+2. Install the required NPM packages:
+   ```sh
+   npm install
+   ```
+3. Start the application:
+    ```sh
+    npm run dev
+    ```
+4. Open your browser and visit the appropriate localhost port (in this case: <a>localhost:5173</a>).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
+
+## License
+
+Distributed under the [MIT License](LICENSE). See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
+
+## Contact
+
+Zeus Elderfield - zdelderfield.work@gmail.com
+
+Project Link: [Project Repository URL](https://github.com/elderfieldzeus/schedaddle)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
