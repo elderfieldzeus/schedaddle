@@ -5,12 +5,14 @@ import SubjectContainer from '../components/SubjectContainer'
 import { IProposedSchedule, ISchedule, ISubject, ITable } from '../types/types'
 import { createProposedSchedules } from '../utils/schedule'
 import { convertTable, createDefaultTable } from '../utils/display'
+import Toggle from '../components/Toggle'
 
 const Home: React.FC = () => {
   const [subjects, setSubjects] = useState<ISubject[]>([]);
   const [proposed, setProposed] = useState<IProposedSchedule[]>([]);
   const [table, setTable] = useState<ITable>(createDefaultTable());
   const [index, setIndex] = useState<number>(0);
+  const [mode, setMode] = useState<boolean>(false);
 
   const handleAddSubject = (index: number) => {
     setSubjects(prev => {
@@ -161,7 +163,7 @@ const Home: React.FC = () => {
               Clear Table
             </button>
           </div>
-          <div className='w-full min-h-[46rem] bg-white border-2 border-gray-200 grid grid-cols-7 divide-x-2 divide-gray-200 divide-solid'>
+          <div id={mode ? 'sched-table' : ''} className='w-full min-h-[46rem] bg-white border-2 border-gray-200 grid grid-cols-7 divide-x-2 divide-gray-200 divide-solid'>
               <div className='h-full grid grid-rows-[repeat(29,1fr)] text-xs divide-y-2 divide-gray-200 divide-solid text-center'>
                 <Cell className='bg-blue-400 text-white'>&nbsp;</Cell>
                 <Cell>7:00-7:30AM</Cell>
@@ -241,6 +243,11 @@ const Home: React.FC = () => {
                   )
                 })}
               </div>
+          </div>
+
+          <div className='flex justify-end py-2 gap-1'>
+            <p className={'text-xs ' + (mode ? 'text-blue-400' : 'text-gray-400')}>zeus mode</p>
+            <Toggle checked={mode} handleChange={() => setMode(prev => !prev)}/>
           </div>
         </div>
       </main>

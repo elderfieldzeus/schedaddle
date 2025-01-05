@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#sched-table {
+    background-image: url('/img/zeus-mode.jpg');
+    background-size: cover;
+    background-position: 0 5px;
+    color: white;
+}
